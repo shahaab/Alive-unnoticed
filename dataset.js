@@ -1,4 +1,4 @@
-[
+const jsonData = [
     {
       "Name": "Rayan Abdullah Zakaria Al-Astal",
       "Age": 0,
@@ -33735,3 +33735,5 @@
       "Gender": "female"
     }
    ]
+
+export default jsonData;

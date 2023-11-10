@@ -10,9 +10,8 @@
       padding: 20px;
     }
 
-    #searchInput {
+    #searchInput, #ageSlider {
       margin-bottom: 10px;
-      padding: 5px;
     }
 
     .card {
@@ -30,13 +29,18 @@
 <body>
 
   <input type="text" id="searchInput" placeholder="Search by Name" oninput="searchCards()">
+  <label for="showGender">Show Gender:</label>
+  <input type="checkbox" id="showGender" onchange="toggleGenderVisibility()">
+  <br>
+  <label for="ageSlider">Age Range:</label>
+  <input type="range" id="ageSlider" min="0" max="100" value="0" oninput="filterByAge()">
   
   <div id="cardsContainer"></div>
 
-  <script src="dataset.json"></script>
+  <script type="module">
+    // Import the jsonData from the data.js module
+    import jsonData from './dataset.js';
 
-  <script>
-    // The JSON data is now available as 'jsonData' variable
     // Function to render cards based on the JSON data
     function renderCards(data) {
       var cardsContainer = document.getElementById("cardsContainer");
@@ -66,6 +70,34 @@
 
       var filteredData = jsonData.filter(function(item) {
         return item.Name.toLowerCase().includes(searchTerm);
+      });
+
+      renderCards(filteredData);
+    }
+
+    // Function to toggle visibility of gender
+    function toggleGenderVisibility() {
+      var showGenderCheckbox = document.getElementById("showGender");
+      var filteredData;
+
+      if (showGenderCheckbox.checked) {
+        // Show all data
+        filteredData = jsonData;
+      } else {
+        // Hide gender information
+        filteredData = jsonData.map(item => ({ ...item, Gender: '' }));
+      }
+
+      renderCards(filteredData);
+    }
+
+    // Function to filter cards by age range
+    function filterByAge() {
+      var ageSlider = document.getElementById("ageSlider");
+      var maxAge = parseInt(ageSlider.value);
+
+      var filteredData = jsonData.filter(function(item) {
+        return item.Age <= maxAge;
       });
 
       renderCards(filteredData);
