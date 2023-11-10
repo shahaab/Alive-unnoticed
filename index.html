@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Data Cards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    #searchInput {
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    select, input {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <input type="text" id="searchInput" placeholder="Search by Name" oninput="searchCards()">
+  
+  <div id="cardsContainer"></div>
+
+  <script src="dataset.json"></script>
+
+  <script>
+    // The JSON data is now available as 'jsonData' variable
+    // Function to render cards based on the JSON data
+    function renderCards(data) {
+      var cardsContainer = document.getElementById("cardsContainer");
+      cardsContainer.innerHTML = '';
+
+      data.forEach(function(item) {
+        var card = document.createElement("div");
+        card.classList.add("card");
+
+        card.innerHTML = `
+          <h3>${item.Name}</h3>
+          <p>Age: ${item.Age}</p>
+          <p>Gender: ${item.Gender}</p>
+        `;
+
+        cardsContainer.appendChild(card);
+      });
+    }
+
+    // Call the renderCards function with the loaded data
+    renderCards(jsonData);
+
+    // Function to search cards by name
+    function searchCards() {
+      var searchInput = document.getElementById("searchInput");
+      var searchTerm = searchInput.value.toLowerCase();
+
+      var filteredData = jsonData.filter(function(item) {
+        return item.Name.toLowerCase().includes(searchTerm);
+      });
+
+      renderCards(filteredData);
+    }
+  </script>
+
+</body>
+</html>
